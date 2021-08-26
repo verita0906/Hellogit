@@ -4,7 +4,15 @@ public class HelloWorld {
 
 	public static void main(String[] args) {
 		System.out.println("Hello World");
-		System.out.println("Áö±İ git ¼ö¾÷ Áß");
-		System.out.println("ÁıÁßÇÏ¼¼¿ä~~ ´Ü, ÇÑ¹ø¸¸ ¼ö¾÷ÇÕ´Ï´Ù.");
+		System.out.println("ì§€ê¸ˆ Git ìˆ˜ì—… ì¤‘");
+		System.out.println("ì§‘ì¤‘ í•˜ì„¸ìš”.~~~ ë‹¨ í•œë²ˆë§Œ ìˆ˜ì—…í•©ë‹ˆë‹¤.");
+		test();
+		
+		System.out.println("master ì‘ì—… ì¤‘");
+		System.out.println("moudule_B start");
+		
+		System.out.println("ì¶©ëŒ í•´ê²°~~~ ã…ã…ã…");
+		
+		System.out.println("github ì—°ë™ì‹œì‘");
 	}
 }
