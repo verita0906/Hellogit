@@ -6,7 +6,7 @@ public class Tank extends Unit {
 
 	
 	void stop() {
-
+//
 	}
 	
 	void changMode() {
