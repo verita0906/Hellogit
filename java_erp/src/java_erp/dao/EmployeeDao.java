@@ -1,4 +1,4 @@
-package java_erp.dao.impl;
+package java_erp.dao;
 
 import java.util.ArrayList;
 

@@ -8,11 +8,20 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import java_erp.dao.EmployeeDao;
 import java_erp.dto.Employee;
 import java_erp.util.JdbcUtil;
+import java_erp_teacher.dto.Department;
+import java_erp_teacher.dto.Title;
 
 public class EmployeeImpl implements EmployeeDao {
 	private static final EmployeeImpl instance = new EmployeeImpl();
+	
+	public static EmployeeDaoImpl getInstace() {
+		return instance;
+	}
+	
+	private EmployeeDaoImpl() {}
 	
 	@Override
 	public ArrayList<Employee> selectEmployeeAll() {
@@ -24,14 +33,11 @@ public class EmployeeImpl implements EmployeeDao {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 		)
-		{	ArrayList<Employee> list = new ArrayList<>();
-			while(rs.next()) {
-				int empno = rs.getInt("empno");
-				String empname = rs.getString("empno");
-				String title = rs.getString("title");
-				String manager = rs.getString("manager");
-				int salary = rs.getInt("salary");
-				int dno = rs.getInt("dno");
+		{	if(rs.next()) {
+				list = new ArrayList<Employee>();
+				do {
+					list.add(getEmployee);
+				}while(rs.next());
 			}
 			return list;
 		} catch (SQLException e) { 
@@ -40,7 +46,6 @@ public class EmployeeImpl implements EmployeeDao {
 		return null;
 	}
 
-	
 	
 	
 	@Override
@@ -52,19 +57,30 @@ public class EmployeeImpl implements EmployeeDao {
 		)
 		{
 			pstmt.setInt(1, emp.getEmpNo());
-			pstmt.setString(2, emp.getEmpName());
-			pstmt.setString(3, emp.getTitle().gettName());
-			pstmt.setString(4, emp.getManager().getEmpName());
-			pstmt.setInt(5, emp.getSalary());
-			pstmt.setInt(6, emp.
-			return pstmt.executeUpdate();
-		} 
-		catch(SQLException e) { 
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					return.getEmployee(rs);
+				}
+			}
+		} catch(SQLException e) { 
 			e.printStackTrace();
 		}
 		return null;
 	}
 
+	private Employee getEmployee(ResultSet rs) throws SQLException {
+		//empno, empname, title, manager, salary, dno
+		int empNo = rs.getInt("empno");
+		String empName = rs.getString("empname");
+		
+		Title title = rs.getInt("title") == 0 ? null : new Title(rs.getInt("title"));
+		Employee manager = rs.getInt("manager") == 0 ? null : new Employee(rs.getInt("manager"));
+		int salary = rs.getInt("salary");
+		Department dept = rs.getInt("dno") == 0 ? null : new Department(rs.getInt("dno"));
+		return new Employee(empNo, empName, title, manager, salary, dept);
+	}
+	
+	
 	@Override
 	public int insertEmployee(Employee emp) {
 		//empno, empname, title, manager, salary, dno
@@ -74,29 +90,32 @@ public class EmployeeImpl implements EmployeeDao {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 		)
 		{
-			// 값이 null인 겨웅를 감안해야 -> title, manager, dno
+			// 값이 null인 경우를 감안해야 -> title, manager, dno
 			pstmt.setInt(1, emp.getEmpNo());
 			pstmt.setString(2, emp.getEmpName());
 
 			try {
-			pstmt.setInt(3, emp.getTitle()==null ? null : emp.getEmpNo());
+			pstmt.setInt(3, emp.getTitle().gettNo());
 			} catch(NullPointerException e) {
 				pstmt.setNull(3, Types.INTEGER);
 			}
 			try {
+			pstmt.setInt(4, emp.getManager().getEmpNo());
+			} catch(NullPointerException e) {
+				pstmt.setNull(3, Types.INTEGER);
+			}
 			pstmt.setInt(5, emp.getSalary());
 			} catch(NullPointerException e) {
 				pstmt.setNull(5, Types.INTEGER);
 			}
 			try {
-			pstmt.setInt(6, emp.getDept()==null? null : emp.getDept().getDeptNo());
-			return pstmt.executeUpdate();
+			pstmt.setInt(6, emp.getDept().getDeptNo());
 			} catch(NullPointerException e) {
 				pstmt.setNull(6, Types.INTEGER);
-			}
-			System.out.println();
+			} 
+			System.out.println(pstmt);
+			return pstmt.executeUpdate();	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
@@ -122,20 +141,22 @@ public class EmployeeImpl implements EmployeeDao {
 				pstmt.setNull(3, Types.INTEGER);
 			}
 			try {
-				pstmt.setInt(5, emp.getDept());
+				pstmt.setInt(4, emp.getManager().getEmpNo());
+			} catch(NullPointerException e) {
+				pstmt.setNull(4, Types.INTEGER);
+			}	
+			try {
+				pstmt.setInt(5, emp.getDept().getDeptNo());
 			} catch(NullPointerException e) {
 				pstmt.setNull(5, Types.INTEGER);
 			}
-			try {
+			
 				pstmt.setInt(6, emp.getEmpNo());
-			} catch(NullPointerException e) {
-				pstmt.setNull(6, Types.INTEGER);
-			}
-			System.out.println(pstmt);
-			return pstmt.executeUpdate();
+				System.out.println("update pstmt" + pstmt);
+				return pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();			
-		
+			e.printStackTrace();
+		}	
 		return 0;
 	}
 
@@ -146,13 +167,14 @@ public class EmployeeImpl implements EmployeeDao {
 		try
 		(
 			Connection con = JdbcUtil.getConnection();
-			PreparedStatement 
-			pstmt.setInt
+			PreparedStatement pstmt = con.prepareStatement(sql); 
 		)
 		{
+			pstmt.setInt(1, emp.getEmpNo());
+			return pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		}//
 		return 0;
 	}
-
 }

@@ -9,17 +9,23 @@ public class Employee {
 	private Department dept;
 
 	public Employee() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 	
 	public Employee(int empNo) {
-		super();
-		this.empNo = empNo;
-			
+		this.empNo = empNo;		
 	}
 
 
+	public Employee(int empNo, String empName, Title title, Employee manager, int salary, Department dept) {
+		this.empNo = empNo;
+		this.empName = empName;
+		this.title = title;
+		this.manager = manager;
+		this.salary = salary;
+		this.dept = dept;
+	}
+	
 	public int getEmpNo() {
 		return empNo;
 	}

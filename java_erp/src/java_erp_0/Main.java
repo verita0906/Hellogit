@@ -1,7 +1,8 @@
-package java_erp.dao;
+package java_erp_0;
 
 import java_erp.dto.Department;
 import java_erp.dto.Employee;
+import java_erp.dto.Title;
 
 public class Main {
 
@@ -19,12 +20,11 @@ public class Main {
 		System.out.println("emp" + emp2);
 		System.out.println();
 		System.out.println("emp" + emp3);
-		System.out.println();
 
 		
-		Title title = new Title(1, "과장");
+		Title title = new Title(3, "과장");
 
-		Employee manager = new Employee(1003, "이성래", new Title(1), null, 4500000, 1);
+		Employee manager = new Employee(1003, "이성래", new Title(1), null, 4500000, new Department(1));
 		Department dept = new Department(2, "영업", 10);
 		Employee newEmp = new Employee(1004, "현빈", title, manager, 2000000, dept);		
 		
@@ -33,7 +33,8 @@ public class Main {
 		Title emp3Title = newEmp.getTitle();
 		String titleName = newEmp.getTitle().gettName();
 		
-		System.out.println("직책 : %s%n", emp3Title);
-		System.out.println("직책명 : %s%n", titleName);
+		System.out.printf("직책 : %s%n", emp3Title);
+		System.out.printf("직책명 : %s%n", titleName);
+				
 	}
 }

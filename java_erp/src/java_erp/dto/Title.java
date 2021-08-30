@@ -9,13 +9,13 @@ public class Title {
 	}
 	
 	public Title(int tNo) {
-		super();
+		//super();
 		this.tNo = tNo;
 	}
 
 
 	public Title(int tNo, String tName) {
-		super();
+		//super();
 		this.tNo = tNo;
 		this.tName = tName;
 	}
@@ -38,7 +38,7 @@ public class Title {
 
 	@Override
 	public String toString() {
-		return "Title [tNo=" + tNo + ", tName=" + tName + "]";
+		return String.format("Title [tNo=%s, tName=%s]", tNo, tName);
 	}	
 	
 }
